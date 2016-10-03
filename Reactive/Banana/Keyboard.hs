@@ -1,5 +1,6 @@
 {-# LANGUAGE RankNTypes,ScopedTypeVariables
-    ,UndecidableInstances,TypeFamilies #-}
+    ,UndecidableInstances,TypeFamilies
+    ,CPP #-}
 module Reactive.Banana.Keyboard where
 
 import Reactive.Banana
@@ -105,7 +106,11 @@ withKeyboardT :: (Functor m)
               => Event String
               -> KeyboardT m a
               -> m (a,Event String,Behavior [String])
+#if MIN_VERSION_reducers(3,11,0)
 withKeyboardT kb m = (_3 %~ getAp) <$> runRWST (m^.keyboard) (pure []) kb
+#else
+withKeyboardT kb m = (_3 %~ getApp) <$> runRWST (m^.keyboard) (pure []) kb
+#endif
 
 withKeyboard_ :: MonadMomentIO m
               => Event String

@@ -13,10 +13,10 @@ name:                reactive-banana-transformers
 version:             0.1.0.0
 
 -- A short (one-line) description of the package.
--- synopsis:            
+synopsis:            Monad transformer approach to composing FRP programs
 
 -- A longer description of the package.
--- description:         
+description:         Monad transformer approach to composing FRP programs
 
 -- The license under which the package is released.
 license:             MIT
@@ -45,6 +45,9 @@ build-type:          Simple
 -- Constraint on the version of Cabal needed to build this package.
 cabal-version:       >=1.10
 
+source-repository head
+  type:     git
+  location: https://github.com/literate-unitb/reactive-banana-transformers
 
 library
   -- Modules exported by the library.
@@ -65,13 +68,13 @@ library
   default-extensions:    RankNTypes, ScopedTypeVariables, DeriveFunctor, QuasiQuotes, RankNTypes, DeriveFunctor, RankNTypes, TemplateHaskell, GeneralizedNewtypeDeriving, FlexibleInstances, MultiParamTypeClasses, FlexibleContexts, DefaultSignatures, TupleSections, FunctionalDependencies
   
   -- Other library packages from which modules are imported.
-  build-depends:       base >=4.8 && <4.9, stm >=2.4 && <2.5, mtl >=2.2 && <2.3, transformers >=0.4 && <0.5, either >=4.4 && <4.5, semigroups >=0.18 && <0.19, lens >=4.13 && <4.14, reducers, safe, reactive-banana, printf-th, MissingH, QuickCheck, string-lenses, data-ordlist, invariants, generic-instances, these, tagged, time, containers, data-default, MonadRandom, monad-loops, async, transformer-lenses, typelist-functor, file-system-mockup, show-with, co-applicative, lens-extra, unitb-testing, axiomatic-classes
+  build-depends:       base >=4.8 && <5, stm >=2.4 && <2.5, mtl >=2.2 && <2.3, transformers >=0.4 && <0.6, either >=4.4 && <4.5, semigroups >=0.16 && <0.19, lens >=4.12 && <4.15, reducers, safe, reactive-banana, printf-th, MissingH, QuickCheck, string-lenses, data-ordlist, invariants, generic-instances, these, tagged, time, containers, data-default, MonadRandom, monad-loops, async, transformer-lenses, typelist-functor, file-system-mockup, show-with, co-applicative, lens-extra, unitb-testing, axiomatic-classes
   
   ghc-options: -W -fwarn-missing-signatures 
          -fwarn-incomplete-uni-patterns
          -fwarn-missing-methods
          -fno-ignore-asserts
-         -fwarn-tabs -Werror
+         -fwarn-tabs
          -j8
 
   -- Directories containing source files.
