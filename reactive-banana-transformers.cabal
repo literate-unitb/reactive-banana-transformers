@@ -51,7 +51,8 @@ source-repository head
 
 library
   -- Modules exported by the library.
-  exposed-modules:    Reactive.Banana.Async
+  exposed-modules:    Reactive
+                      Reactive.Banana.Async
                       Reactive.Banana.Combinators.Extras
                       Reactive.Banana.Discrete
                       Reactive.Banana.FileSystem
@@ -82,4 +83,27 @@ library
   
   -- Base language which the package is written in.
   default-language:    Haskell2010
-  
+
+test-suite tests
+   ghc-options: -W -fwarn-missing-signatures 
+         -fwarn-incomplete-uni-patterns
+         -fwarn-missing-methods
+         -dynamic-too
+         -threaded  -fno-ignore-asserts
+         -fwarn-tabs -Werror
+         -j8
+   default-extensions:  OverloadedStrings
+   -- type: exitcode-stdio-1.0
+   type: exitcode-stdio-1.0
+   hs-source-dirs: suite
+   default-language:    Haskell2010
+   main-is: test.hs
+   build-depends:       base >= 4.8 && < 5,
+                        shelly, directory >= 1.2.3.0, 
+                        unitb-testing,
+                        lens, axiomatic-classes,
+                        timeit,
+                        reactive-banana-transformers
+   default-language:    Haskell2010
+   default-extensions:  TupleSections, DeriveFunctor, DeriveGeneric, DeriveFoldable, RankNTypes, MultiParamTypeClasses, GeneralizedNewtypeDeriving, TemplateHaskell, FlexibleContexts, FlexibleInstances, DeriveDataTypeable, TypeSynonymInstances, DefaultSignatures, DeriveTraversable, FunctionalDependencies, ImplicitParams
+

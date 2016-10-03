@@ -74,7 +74,7 @@ packages:
     commit: 405f81025293b9f9cd25145644ca86fe88a69388
 - location:
     git: https://github.com/literate-unitb/generic-instances.git
-    commit: 8c6033262eeb073165e08e52e6b0b6fff37d0a3c
+    commit: 9c45c7caff4e93d0df96622ffb5238f04fa8b5af
 - location:
     git: https://github.com/literate-unitb/invariants.git
     commit: fe80d6e750e8cffba3a9d8cf2b4d34650aca4059
@@ -105,6 +105,9 @@ extra-deps:
     - pqueue-1.3.2
     - reactive-banana-1.1.0.1
     - these-0.7.2
+    - aeson-1.0.1.0
+    - directory-1.2.7.0
+    - shelly-1.6.8.1
 
 # Override default flag values for local packages and extra-deps
 flags: {}
