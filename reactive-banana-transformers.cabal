@@ -51,8 +51,7 @@ source-repository head
 
 library
   -- Modules exported by the library.
-  exposed-modules:    Reactive
-                      Reactive.Banana.Async
+  exposed-modules:    Reactive.Banana.Async
                       Reactive.Banana.Combinators.Extras
                       Reactive.Banana.Discrete
                       Reactive.Banana.FileSystem
@@ -61,6 +60,7 @@ library
                       Reactive.Banana.Monitor
                       Reactive.Banana.Property
                       Reactive.Banana.Test
+                      -- Reactive
   
   -- Modules included in this library but not exported.
   -- other-modules:       
