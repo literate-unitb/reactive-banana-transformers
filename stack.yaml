@@ -89,7 +89,7 @@ packages:
     commit: 3efb6a9358cae2bd47606b59a97dad3ddd84ffae
 - location:
     git: https://github.com/literate-unitb/classy-lens-hierarchy.git
-    commit: 8246070459f331341aefc66ac5cb5030d2d5a14b
+    commit: 405e85716d6bc967476dc74292f4edcf150d50e9
 - location:
     git: https://github.com/literate-unitb/bipartite-graph.git
     commit: d8be3b96a947bbf05362e919cca7a85c4a16bbc2
