@@ -88,7 +88,6 @@ test-suite tests
    ghc-options: -W -fwarn-missing-signatures 
          -fwarn-incomplete-uni-patterns
          -fwarn-missing-methods
-         -dynamic-too
          -threaded  -fno-ignore-asserts
          -fwarn-tabs
          -j8
