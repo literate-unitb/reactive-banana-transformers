@@ -27,7 +27,7 @@ import System.Exit
 import Test.UnitTest
 -- import Test.QuickCheck.Lens ()
 
--- import Utilities.Table
+-- import Utilities.Map
 import System.TimeIt
 
 test_case :: TestCase

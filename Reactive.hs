@@ -44,19 +44,19 @@ import System.IO.FileFormat
 import Text.Printf.TH
 
 import Utilities.Syntactic
-import Utilities.Table
+import Utilities.Map
 
 import Interactive.Pipeline (Params)
 import Interactive.Serialize (seqFileFormat,Seq)
 
 type Key = (MachineId,Label)
 
-type POs = Table Key Seq
--- type ResultSet = Table Key PO
-type Results = Table Key (Maybe Bool)
+type POs = Map Key Seq
+-- type ResultSet = Map Key PO
+type Results = Map Key (Maybe Bool)
 type PO  = (Seq,Maybe Bool)
 type Prover = (Seq,Async Bool)
-type ProverSet = Table Key Prover
+type ProverSet = Map Key Prover
 type M = Mt MomentIO
 
 -- type MExc = Either (NonEmpty SomeException)
@@ -189,7 +189,7 @@ makeProverSet initPos pos = mdo
 
 -- prover :: Event ()
 --        -> Discrete POs
---        -> M ( Behavior (Table Key (Maybe Bool))
+--        -> M ( Behavior (Map Key (Maybe Bool))
 --             , Behavior Int)
 -- prover exit pos = do
 --     fn <- asks path
@@ -372,16 +372,16 @@ printReport (pos,errs,ws) = do
 --         b <- stepper True $ B.unionWith const (True <$ p) (False <$ ch)
 --         lift $ reactimate' $ whenE b ch
 
-seqFileFormat' :: FileFormat (Table Key (Seq, Maybe Bool))
+seqFileFormat' :: FileFormat (Map Key (Seq, Maybe Bool))
 seqFileFormat' = prismFormat (keyIso (_1 %~ fromString . pretty) (_1 %~ as_label)) $ seqFileFormat
     where
         keyIso :: (Ord k0,Ord k1)
                => (k0 -> k1)
                -> (k1 -> k0)
-               -> Iso' (Table k0 a) (Table k1 a)
+               -> Iso' (Map k0 a) (Map k1 a)
         keyIso f g = iso (mapKeys f) (mapKeys g)
 
-proof_obligation' :: System -> Table Key Seq
+proof_obligation' :: System -> Map Key Seq
 proof_obligation' = M.unions . fmap (uncurry $ M.mapKeys . (,)) 
                              . M.toList . M.map proof_obligation 
                              . view' machines

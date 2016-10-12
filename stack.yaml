@@ -81,13 +81,10 @@ packages:
     commit: e7c85fc6f210516e9c66e1e7f6bf52996653629c
 - location:
     git: https://github.com/literate-unitb/classy-lens-hierarchy.git
-    commit: 33764edf18159e5eac4059371e66efffc6d03fd5
+    commit: 6c4edc765a66f10d4a6cd2f1a7490e91a2673704
 - location:
     git: https://github.com/literate-unitb/bipartite-graph.git
-    commit: 15ae5699c24d3741c3f36b9ad2057d5f69afc119
-- location:
-    git: https://github.com/literate-unitb/data-map-class.git
-    commit: f1672a380d7f069ccc080c2380554acf0b2bf258
+    commit: 7ab97d0f1c5bc1e62a835438fd5e6e1171eb31cd
 
 # Dependency packages to be pulled from upstream that are not in the resolver
 # (e.g., acme-missiles-0.3)
