@@ -20,8 +20,8 @@ cache:
   - $HOME/.ghc
   - $HOME/.cabal
   - $HOME/.stack
-  - $HOME/reactive-banana-transformers/reactive-banana-transformers/.stack-work/install
-  - $HOME/reactive-banana-transformers/reactive-banana-transformers/.stack-work/downloaded
+  - $HOME/literate-unitb/reactive-banana-transformers/.stack-work/install
+  - $HOME/literate-unitb/reactive-banana-transformers/.stack-work/downloaded
 
 # The different configurations we want to test. We have BUILD=cabal which uses
 # cabal-install, and BUILD=stack which uses Stack. More documentation on each
