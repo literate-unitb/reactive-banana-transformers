@@ -25,7 +25,7 @@ import Reactive.Banana.IO as R
 
 import Safe
 
-import Text.Printf.TH
+import Text.Printf.TH as Printf
 
 import           Test.QuickCheck as QC hiding ((===),(.||.),(.&&.))
 import qualified Test.QuickCheck as QC 
@@ -163,8 +163,8 @@ constantUnlessB :: (Show a,Eq b)
                 -> Pred a
                 -> Check Event a Invariant
 constantUnlessB f p = co $ \s s' -> 
-        withPrefix ([printf|s: %s\n|] $ show s)
-            $ withPrefix ([printf|s': %s\n|] $ show s')
+        withPrefix ([Printf.s|s: %s\n|] $ show s)
+            $ withPrefix ([Printf.s|s': %s\n|] $ show s')
             $ toInvariant $ p s || f s == f s' || p s'
     where
 
@@ -321,11 +321,11 @@ takeWhile1 p (x:xs) = x:takeWhile p xs
 --             watchSpec b $ do
 --                 f `constantUnlessE` e') xs
 --         let var' = expandEvtBehPair x xs
---         -- monitor (counterexample $ [printf|b: %s\n|] $ show b)
---         monitor (counterexample $ [printf|var': %s\n|] $ show var')
---         monitor (counterexample $ [printf|suffix': \n%s\n|] 
+--         -- monitor (counterexample $ [s|b: %s\n|] $ show b)
+--         monitor (counterexample $ [s|var': %s\n|] $ show var')
+--         monitor (counterexample $ [s|suffix': \n%s\n|] 
 --             $ L.unlines $ map (show . takeUntilE) $ tails var')
---         monitor (counterexample $ [printf|shift': \n%s\n|] 
+--         monitor (counterexample $ [s|shift': \n%s\n|] 
 --             $ L.unlines $ map (show . shift) $ tails var')
 --         stop $ outp QC.=== L.map isSuffix (tails var')
 

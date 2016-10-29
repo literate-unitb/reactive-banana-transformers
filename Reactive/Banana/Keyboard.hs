@@ -131,7 +131,7 @@ reject :: MonadMomentIO m
        -> Behavior [String]
        -> m ()
 reject kb cmds = do
-    let msg = flip [printf|Invalid command: '%s'\nValid commands:\n%s\n|] . unlines . map ("  " ++)
+    let msg = flip [s|Invalid command: '%s'\nValid commands:\n%s\n|] . unlines . map ("  " ++)
     liftMomentIO $ reactimate $ fmap putStrLn . msg <$> cmds <@> kb
 
 command :: (KeyboardMonad m,Read a,Show a,Typeable a)
