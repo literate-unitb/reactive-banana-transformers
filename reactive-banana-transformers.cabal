@@ -47,7 +47,7 @@ cabal-version:       >=1.10
 
 source-repository head
   type:     git
-  location: https://github.com/literate-unitb/reactive-banana-transformers
+  location: https://github.com/unitb/reactive-banana-transformers
 
 library
   -- Modules exported by the library.
