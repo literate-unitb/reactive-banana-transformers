@@ -43,7 +43,7 @@ packages:
 - .
 - location:
    git: https://github.com/unitb/literate-unitb-complete
-   commit: 0bd3bd26e53e4b1e4374c7eb24682e4bfb3e4542
+   commit: ab2e9bccb694f92c56d5d43c84dea5175df08d2b
   subdirs:
      - unitb-testing
      - libs/generic-instances
