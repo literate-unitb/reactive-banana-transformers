@@ -91,7 +91,7 @@ type Jobs' k a b = (Map k (a,Either b (IO b)))
 type Input k a b = STM (Map k (Maybe (a,IO b)))
 type Outbut k a b = Map k (a,Either SomeException b) -> Map k (a,()) -> IO ()
 
-instance Applicative m => Applicative (AsyncMomentT m) where
+instance Applicative (AsyncMomentT m) where
     pure x = AsyncMoment $ pure x
     {-# INLINE (<*>) #-}
     AsyncMoment f <*> AsyncMoment x = AsyncMoment $ f <*> x
@@ -448,7 +448,7 @@ pollAllSTM xs = do
 --     cmp  <- newIORef _ -- $ M.mapMaybe (_2 $ fmap Right . leftToMaybe) first
 --     pend <- newIORef _ -- $ M.mapMaybe (_2 rightToMaybe) first
 --     v <- newEmptyTMVarIO
---     return (takeTMVar v, atomically . putTMVar v)
+--     return (takeTMVar v, atomically . putTMVar v)
 
 {-# INLINE runAsyncT #-}
 runAsyncT :: (MonadMomentIO m,MonadFix m)
@@ -502,7 +502,7 @@ runAsyncT (AsyncMoment (AsyncMomentImpl cmd)) run = do
 -- splittingEvents = iso splitEvents splitEvents'
 
 randomSplit :: MonadRandom m 
-            => Map k a 
+            => Map k a 
             -> m (Map k a,Map k a)
 randomSplit m = do
     let cmd x = do
@@ -553,7 +553,6 @@ interpretJobs gen xs = (mapped.each %~ getMon) $ evalRandT (getMon $ foldMap int
 interpretFrameworks' :: forall t t' b f.
                         ( Curried t (MomentIO (Event b)) f
                         , SameLength t t'
-                        , t' ~ ReplaceF Maybe t
                         , AsTypeList t Event
                         , AsTypeList t' Maybe)
                      => f -> [t'] -> IO ([t'],[Maybe b])
@@ -633,17 +632,17 @@ prop_check_interpret xs = satisfies $ do
         let (e0,_e1) = e^.splittingEvent'
             e0  :: Event Int
             _e1 :: Event ()
-        n <- accumB (sort xs) $ drop 1 <$ e0
+        n <- accumB (sort xs) $ drop 1 <$ e0
         (res,p) <- jobBatch' $ do
                 updateJobs .= (M.fromList . map (id &&& Just .((),).return).take 1 <$> n <@ e0)
         res' <- changePairD res
         m <- stepper 0 $ unionWith const (1 <$ e0) (2 <$ res')
         let _ = m :: Behavior Int
-        do
+        _ <- do
             res' <- behavior res
             p'   <- behavior p
             specify (liftA2 (,) res' p') $ do
-                invariant' (\(m0,m1) -> M.null $ M.intersection m0 m1)
+                _ <- invariant' (\(m0,m1) -> M.null $ M.intersection m0 m1)
                 togetherOnly (changesD res) (changesD p)
         return (never :: Event ())
     specification $ \_ _ -> True

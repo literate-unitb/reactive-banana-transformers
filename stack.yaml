@@ -40,42 +40,25 @@ packages:
 # resolver compiler, dependency conflicts with other packages
 # or unsatisfied dependencies.
 - '.'
+- .
 - location:
-    git: https://github.com/unitb/unitb-testing.git
-    commit: 58a63a4e1f64ae19dc3323dec3823239563e3581
-- location:
-    git: https://github.com/unitb/lens-extra.git
-    commit: bb7ff20059db94e2174925f848121dcbd4d50c76
-- location:
-    git: https://github.com/unitb/co-applicative.git
-    commit: 7188c8bde5e7fb3a9d60370896bb2aec9baa4be4
-- location:
-    git: https://github.com/unitb/show-with.git
-    commit: 67694160165e82ffe4e7a66b5c007d4934c8dc2e
-- location:
-    git: https://github.com/unitb/file-system-mockup.git
-    commit: 911f0e672618fac47bc997c507305691ff433c39
-- location:
-    git: https://github.com/unitb/typelist-functor.git
-    commit: 98171ab0824124d12039567ee9c0851933ce4b44
-- location:
-    git: https://github.com/unitb/transformer-lenses.git
-    commit: 899637f5a57a6909ed0f238e04388521a5f07c04
-- location:
-    git: https://github.com/unitb/generic-instances.git
-    commit: b4eb374d9fde9831eb549849354369617c4e44b1
-- location:
-    git: https://github.com/unitb/serialize-instances.git
-    commit: ff3faa9cf976e68be8d769b5960a1b4db3b9bf63
-- location:
-    git: https://github.com/unitb/string-lenses.git
-    commit: 8e4ee5d4098bba8e70ae7d4dec27bea4cd423362
-- location:
-    git: https://github.com/unitb/classy-lens-hierarchy.git
-    commit: c4f98d500973d9e04f78f398b6c866674019f784
-- location:
-    git: https://github.com/unitb/bipartite-graph.git
-    commit: b76f97da93ef96a52f743f5ca8578e51092c69c8
+   git: https://github.com/unitb/literate-unitb-complete
+   commit: 0bd3bd26e53e4b1e4374c7eb24682e4bfb3e4542
+  subdirs:
+     - unitb-testing
+     - libs/generic-instances
+     - libs/string-lenses
+     - libs/pretty-printable
+     - libs/lens-extra
+     - libs/co-applicative
+     - libs/show-with
+     - libs/file-system-mockup
+     - libs/typelist-functor
+     - libs/transformer-lenses
+     - libs/generic-instances
+     - libs/string-lenses
+     - libs/classy-lens-hierarchy
+     - libs/bipartite-graph
 
 # Dependency packages to be pulled from upstream that are not in the resolver
 # (e.g., acme-missiles-0.3)
@@ -90,6 +73,9 @@ extra-deps:
 - portable-template-haskell-lens-0.1.0.0
 - control-invariants-0.1.0.0
 - axiomatic-classes-0.1.0.0
+- existential-0.2.0.0
+- serialize-instances-0.1.0.0
+- quickcheck-text-0.1.2.1
 
 # Override default flag values for local packages and extra-deps
 flags: {}

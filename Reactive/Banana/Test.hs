@@ -1,3 +1,4 @@
+{-# LANGUAGE OverloadedStrings #-}
 module Reactive.Banana.Test where
 
 import Reactive.Banana.Async as Async

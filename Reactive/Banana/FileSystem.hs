@@ -1,4 +1,4 @@
-{-# LANGUAGE TypeFamilies #-}
+{-# LANGUAGE TypeFamilies, OverloadedStrings #-}
 module Reactive.Banana.FileSystem 
     ( FSMomentT
     , FSMoment
@@ -18,9 +18,12 @@ import Control.Monad.RWS
 import Control.Monad.Writer
 import Control.Monad.State
 
+import Data.List as L
 import Data.List.NonEmpty as NE (NonEmpty(..),toList)
 import qualified Data.Map as M
 import Data.Maybe
+import Data.Text
+import Data.Text.Arbitrary ()
 
 import Prelude hiding (writeFile,readFile)
 
@@ -67,7 +70,7 @@ instance MonadMomentIO m => MonadMomentIO (FSMomentT m) where
     liftMomentIO m = FileSystemMomentT $ liftMomentIO m
 instance MonadFix m => MonadFix (FSMomentT m) where
     mfix f = FileSystemMomentT $ mfix $ unFSMomentT . f
-instance Monad m => Monad (FSMomentT m) where
+instance Monad m => Monad (FSMomentT m) where
     {-# INLINE (>>=) #-}
     FileSystemMomentT m >>= f = FileSystemMomentT $ m >>= unFSMomentT . f
 instance Frameworks m => Frameworks (FSMomentT m) where
@@ -75,8 +78,7 @@ instance Frameworks m => Frameworks (FSMomentT m) where
     type InitF (FSMomentT m) = (MockFileSystemState,InitF m) 
     interpret' = interpretFSMomentT
 
-reactimateFS :: Monad m'
-             => Event (FileSystemM ())
+reactimateFS :: Event (FileSystemM ())
              -> FSMomentT m' ()
 reactimateFS e = reactimateFS' $ pure <$> e
 
@@ -131,26 +133,26 @@ lockStep :: [NonEmpty a] -> [a]
 lockStep = f 0
     where
         f _ [] = []
-        f n (x:xs) = drop n (NE.toList x) ++ f ((n `max` length x) - 1) xs
+        f n (x:xs) = L.drop n (NE.toList x) ++ f ((n `max` L.length x) - 1) xs
 
 lockStep' :: [NonEmpty a] -> [a]
 lockStep' [] = []
-lockStep' (x:xs) = NE.toList x ++ drop (length x - 1) (lockStep xs)
+lockStep' (x:xs) = NE.toList x ++ L.drop (L.length x - 1) (lockStep xs)
 
 prop_lockStep :: (Eq a, Show a) => [NonEmpty a] -> Property
 prop_lockStep xs = lockStep xs === lockStep' xs
 
-prop_file_io :: String
-             -> [Maybe (Maybe String,Maybe String,Maybe ())] 
+prop_file_io :: Text
+             -> [Maybe (Maybe Text,Maybe Text,Maybe ())] 
              -> Property
 prop_file_io c = satisfiesWith' showInput showOutput prog' prop (fs,())
     where
-        showInput :: [Maybe (Maybe String, Maybe String, Maybe ())]
+        showInput :: [Maybe (Maybe Text, Maybe Text, Maybe ())]
                   -> [[String]]
         showInput xs = [ xs & traverse %~ show . join . fmap (view _1)
                        , xs & traverse %~ show . join . fmap (view _2)
                        , xs & traverse %~ show . join . fmap (view _3) ]
-        showOutput :: [Maybe (Maybe (Maybe String), Maybe (Maybe String))]
+        showOutput :: [Maybe (Maybe (Maybe Text), Maybe (Maybe Text))]
                    -> [[String]]
         showOutput xs = [ xs & traverse %~ show . join . fmap (view _1)
                         , xs & traverse %~ show . join . fmap (view _2) ]
@@ -159,11 +161,11 @@ prop_file_io c = satisfiesWith' showInput showOutput prog' prop (fs,())
         fs :: MockFileSystemState
         fs = create' $ do
                 files %= M.insert f1 (Just c)
-        prog' :: Event (Maybe String,Maybe String,Maybe ()) 
-              -> FSMoment (Event (Maybe (Maybe String),Maybe (Maybe String)))
+        prog' :: Event (Maybe Text,Maybe Text,Maybe ()) 
+              -> FSMoment (Event (Maybe (Maybe Text),Maybe (Maybe Text)))
         prog' = prog^.packageEventFun'
-        prog :: Event String -> Event String -> Event ()
-             -> FSMoment (Event (Maybe String), Event (Maybe String))
+        prog :: Event Text -> Event Text -> Event ()
+             -> FSMoment (Event (Maybe Text), Event (Maybe Text))
         prog ioF1 ioF2 readF = do
                 reactimateFS $ writeFile f1 <$> ioF1
                 reactimateFS $ writeFile f2 <$> ioF2
@@ -171,22 +173,22 @@ prop_file_io c = satisfiesWith' showInput showOutput prog' prop (fs,())
                     (mapEventFS id $ ifFileExists f1 readFile <$ readF)
                     (mapEventFS id $ ifFileExists f2 readFile <$ readF)
                 
-        prop :: [Maybe (Maybe String, Maybe String,Maybe ())]
-             -> [Maybe (Maybe (Maybe String), Maybe (Maybe String))] 
+        prop :: [Maybe (Maybe Text, Maybe Text,Maybe ())]
+             -> [Maybe (Maybe (Maybe Text), Maybe (Maybe Text))] 
              -> Property
-        prop input output = flip evalState (Just c,Nothing) $ do
-                let runReadWrite :: (Maybe String, Maybe String, Maybe ())
+        prop input output = flip evalState (Just c,Nothing) $ do
+                let runReadWrite :: (Maybe Text, Maybe Text, Maybe ())
                                  -> State
-                                      (Maybe String, Maybe String)
-                                      (NonEmpty (Maybe (Maybe (Maybe String), Maybe (Maybe String))))
+                                      (Maybe Text, Maybe Text)
+                                      (NonEmpty (Maybe (Maybe (Maybe Text), Maybe (Maybe Text))))
                     runReadWrite (x,y,tick) = do
                             mapM_ (assign _1 . Just) x
                             mapM_ (assign _2 . Just) y
                             sequence $ 
                                 (return Nothing)
                                 :| (maybeToList tick >> [readFirst,readSecond])
-                    readFirst :: State (Maybe String,Maybe String)
-                                       (Maybe (Maybe (Maybe String), Maybe (Maybe String)))
+                    readFirst :: State (Maybe Text,Maybe Text)
+                                       (Maybe (Maybe (Maybe Text), Maybe (Maybe Text)))
                     readFirst  = Just . (_1 %~ Just) . (_2 .~ Nothing) <$> get
                     readSecond = Just . (_2 %~ Just) . (_1 .~ Nothing) <$> get
                 xs <- input & traverse (maybe (return $ pure Nothing) runReadWrite)

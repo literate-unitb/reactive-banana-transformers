@@ -58,7 +58,6 @@ between e0 e1 = do
 
 uncurriedEvent' :: ( Curried t r f
                    , AsTypeList t Event
-                   , t' ~ ReplaceF Maybe t
                    , AsTypeList t' Maybe
                    , TypeListOf t ~ TypeListOf t')
                 => Iso' f (Event t' -> r)
@@ -66,8 +65,6 @@ uncurriedEvent' = uncurried'.lmapping (mapping asTypeList'.splittingEventList.fr
 
 uncurriedEvent :: ( Curried tE r f,AsTypeList tE Event,AsTypeList t Maybe
                   , Curried tE' r' f',AsTypeList tE' Event,AsTypeList t' Maybe
-                  , t ~ ReplaceF Maybe tE
-                  , t' ~ ReplaceF Maybe tE'
                   , TypeListOf tE ~ TypeListOf t
                   , TypeListOf tE' ~ TypeListOf t')
                => Iso f f' (Event t -> r) (Event t' -> r')
@@ -77,15 +74,12 @@ uncurriedEvent = withIso uncurriedEvent'
 
 curriedEvent :: ( Curried tE r f,AsTypeList tE Event,AsTypeList t Maybe
                 , Curried tE' r' f',AsTypeList tE' Event,AsTypeList t' Maybe
-                , t ~ ReplaceF Maybe tE
-                , t' ~ ReplaceF Maybe tE'
                 , TypeListOf tE ~ TypeListOf t 
                 , TypeListOf tE' ~ TypeListOf t')
              => Iso (Event t -> r) (Event t' -> r') f f'
 curriedEvent = from uncurriedEvent
 
 curriedEvent' :: ( Curried t r f,AsTypeList t Event,AsTypeList t' Maybe
-                 , t' ~ ReplaceF Maybe t
                  , TypeListOf t ~ TypeListOf t')
               => Iso' (Event t' -> r) f
 curriedEvent' = from uncurriedEvent'
@@ -120,7 +114,7 @@ packageEventFun' :: forall t r' f m.
                     , AsTypeList (ReplaceF Event t) Event
                     , TypeListOf t ~ TypeListOf (ReplaceF Event t)
                     , TypeListOf (ReplaceF Event r') ~ TypeListOf r'
-                    , Functor m, ReplaceF Maybe (ReplaceF Event t) ~ t)
+                    , Functor m )
                  => Iso' f (Event t -> m (Event r'))
 packageEventFun' = iso0 . iso1
     where

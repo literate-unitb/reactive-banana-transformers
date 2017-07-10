@@ -1,4 +1,5 @@
 {-# LANGUAGE GADTs,KindSignatures,TypeFamilies #-}
+{-# OPTIONS_GHC -fno-warn-orphans #-}
 module Reactive.Banana.IO where
 
 import Control.Lens
@@ -19,7 +20,7 @@ import Reactive.Banana.Frameworks as R
 class (MonadMoment m,MonadIO m) => MonadMomentIO m where
     liftMomentIO :: MomentIO a -> m a
     default liftMomentIO :: (m ~ t m', MonadMomentIO m',MonadTrans t) 
-                         => MomentIO a -> t m' a
+                         => MomentIO a -> m a
     liftMomentIO = lift . liftMomentIO
 
 class MonadMomentIO m => Frameworks m where
