@@ -59,6 +59,21 @@ packages:
      - libs/string-lenses
      - libs/classy-lens-hierarchy
      - libs/bipartite-graph
+- location:
+    git: https://github.com/unitb/serialize-instances.git
+    commit: ff3faa9cf976e68be8d769b5960a1b4db3b9bf63
+- location:
+    git: https://github.com/unitb/quickcheck-report.git
+    commit: 1bcc8cd5a91bc660346d1df7eb6ebb1a8152e865
+- location:
+    git: https://github.com/unitb/axiomatic-classes.git
+    commit: 24ce269668f39a74ba1fe0628c4f6d65e092870c
+- location:
+    git: https://github.com/unitb/invariants.git
+    commit: e644470ef8c16d5b1631b23ff3a127f8596955b8
+- location:
+    git: https://github.com/unitb/existential.git
+    commit: c3ebd7b2b0d20a471c51bcd391dab649a9693606
 
 # Dependency packages to be pulled from upstream that are not in the resolver
 # (e.g., acme-missiles-0.3)
